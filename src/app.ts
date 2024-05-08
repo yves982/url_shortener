@@ -1,11 +1,17 @@
 ﻿import express from "express"
 import compression from "compression"
+import cors from "cors"
 import {loadRoutes} from "./routes";
 
 export async function initServer(): Promise<express.Express> {
     const app = express()
     const appRouter = express.Router()
-
+    
+    app.use(cors({
+        // setup the allowed origin from .env file with dotenv
+        // origin: process.env.ALLOWED_ORIGIN
+        credentials: true
+    }))
     app.use(compression())
     app.use(express.json())
 
