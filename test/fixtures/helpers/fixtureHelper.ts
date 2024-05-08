@@ -20,12 +20,11 @@ export class FixtureHelper {
         const filePath = Path.join(
             __dirname,
             "..",
-            "fixtures",
             "application",
             "useCases",
             ...relativePath.split("/")
         )
-        const content = await fs.readFile(filePath, { encoding: "utf8" })
+        const content = (await fs.readFile(filePath, { encoding: "utf8" })).trim()
         return JSON.parse(content, FixtureHelper.dateTimeReviver) as T
     }
 }
