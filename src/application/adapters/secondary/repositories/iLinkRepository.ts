@@ -5,8 +5,13 @@ export interface ILinkRepository {
     isInitialized: boolean
     
     // persist a new link and populates its id
-    save(link: Link) : Promise<Link>;
+    create(link: Link) : Promise<Link>
+    
+    // updates an existing link
+    update(link: Link) : Promise<Link>;
     
     // finds a Link by its identifier
-    findById(id: number): Promise<Link>
+    //
+    // returns null of given link does not exists
+    findById(id: number): Promise<Link|null>
 }

@@ -1,6 +1,4 @@
-﻿import {ILinkRepository} from "../adapters/secondary/repositories/iLinkRepository";
-import {IEncoder} from "../adapters/secondary/iEncoder";
-import {IOriginalLinkRetriever} from "../adapters/secondary/iOriginalLinkRetriever";
+﻿import {IOriginalLinkRetriever} from "../adapters/secondary/iOriginalLinkRetriever";
 import {ILinkIdentifier} from "../adapters/secondary/ILinkIdentifier";
 
 export class Link {
@@ -8,7 +6,8 @@ export class Link {
     constructor(
         public readonly originalUrl: string,
         private readonly linkIdentifier?: ILinkIdentifier,
-        public readonly id: number = -1
+        public readonly id: number = -1,
+        public readonly clicksCnt: number = 0
     ) {
     }
     
@@ -19,7 +18,12 @@ export class Link {
         return this.linkIdentifier.identify(this)
     }
     
-    static async expand(shortUrl: string, originalLinkRetriever: IOriginalLinkRetriever): Promise<string> {
-        return await originalLinkRetriever.retrieve(shortUrl)
+    click(): Link {
+        return new Link(
+            this.originalUrl,
+            this.linkIdentifier,
+            this.id,
+            this.clicksCnt+1
+        )
     }
 }

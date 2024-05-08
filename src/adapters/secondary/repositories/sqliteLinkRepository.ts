@@ -2,6 +2,7 @@
 import {Link} from "../../../application/models/link";
 import {Database, open} from "sqlite";
 import sqlite3 from "sqlite3";
+import {undefined} from "zod";
 
 export class SqliteLinkRepository implements ILinkRepository {
     public isInitialized: boolean = false
@@ -17,19 +18,27 @@ export class SqliteLinkRepository implements ILinkRepository {
         this.isInitialized = true
     }
     
-    async save(link: Link): Promise<Link> {
+    async create(link: Link): Promise<Link> {
         if(!this.isInitialized) {
             throw new Error("invalid operation : must init first")
         }
-        await this.db!.run("INSERT INTO Link(originalUrl) VALUES(:url)", { ":url": link.originalUrl })
-        return await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link
+        await this.db!.run("INSERT INTO Link(originalUrl, clicksCnt) VALUES(:url, :cnt)", { ":url": link.originalUrl, ":cnt": link.clicksCnt })
+        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
     }
 
     async findById(id: number): Promise<Link> {
-        return await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE rowid= :id", { ":id": id }) as Link
+        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl, clicksCnt FROM Link WHERE rowid= :id", { ":id": id }) as Link)
     }
     
     async empty(): Promise<void> {
         await this.db!.run("DELETE FROM Link")
+    }
+
+    async update(link: Link): Promise<Link> {
+        if(!this.isInitialized) {
+            throw new Error("invalid operation : must init first")
+        }
+        await this.db!.run("UPDATE Link set originalUrl = :url, clicksCnt= :cnt", { ":url": link.originalUrl, ":cnt": link.clicksCnt })
+        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
     }
 }

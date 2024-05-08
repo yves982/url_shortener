@@ -10,7 +10,7 @@ export class LinkIdentifier implements ILinkIdentifier {
     ) {
     }
     async identify(link: Link): Promise<string> {
-        const updatedLink = await this.linkRepository.save(link)
+        const updatedLink = await this.linkRepository.create(link)
         return this.encoder.encode(updatedLink.id)
     }
     

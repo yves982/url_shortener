@@ -1319,6 +1319,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bottlejs@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "bottlejs@npm:2.0.1"
+  checksum: 10c0/072be9d8fa8cc6c4e3b0f1013fa99652ca48f44f2827224dc3f0b8c3e778d9c3dd6a986ac048d4241acccce1cddde25ff5f1fdcc5af61d7ebfc361033625089c
+  languageName: node
+  linkType: hard
+
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -4013,6 +4020,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"punycode@npm:^2.1.0":
+  version: 2.3.1
+  resolution: "punycode@npm:2.3.1"
+  checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
+  languageName: node
+  linkType: hard
+
 "pure-rand@npm:^6.0.0":
   version: 6.1.0
   resolution: "pure-rand@npm:6.1.0"
@@ -4811,6 +4825,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uri-js@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "uri-js@npm:4.4.1"
+  dependencies:
+    punycode: "npm:^2.1.0"
+  checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
+  languageName: node
+  linkType: hard
+
 "url-shortener@workspace:.":
   version: 0.0.0-use.local
   resolution: "url-shortener@workspace:."
@@ -4820,6 +4843,7 @@ __metadata:
     "@types/express": "npm:^4.17.21"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^20.12.10"
+    bottlejs: "npm:^2.0.1"
     compression: "npm:^1.7.4"
     cors: "npm:^2.8.5"
     express: "npm:^4.19.2"
@@ -4828,6 +4852,8 @@ __metadata:
     sqlite3: "npm:^5.1.7"
     ts-jest: "npm:^29.1.2"
     typescript: "npm:^5.4.5"
+    uri-js: "npm:^4.4.1"
+    zod: "npm:^3.23.7"
   languageName: unknown
   linkType: soft
 
@@ -4989,5 +5015,12 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.23.7":
+  version: 3.23.7
+  resolution: "zod@npm:3.23.7"
+  checksum: 10c0/c746d8882d4797597c945fea293dc69caba6de90b82037ca8ee8a1acaea8c5f8ce73492b4a5fac3100a11a99807737b2fcd51db93d9e9ca4d6b938faed67b6e3
   languageName: node
   linkType: hard
