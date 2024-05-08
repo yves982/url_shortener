@@ -15,7 +15,8 @@ const expandUrlSchema = z.object({ url: z.string().min(1) })
 shortUrlRouter.post('/shorturl', async (req, res) => {
     try {
         const { url } = await shortenUrlSchema.parseAsync(req.params)
-        await container.ShortLinkUseCase.shortenLink(url)
+        const shortenedUrl = await container.ShortLinkUseCase.shortenLink(url)
+        return res.json({originalUrl: url, shortUrl: shortenedUrl})
     } catch (e: any) {
         if(e.message.indexOf("invalid")) {
             return res.status(400).json({ error: "invalid URL" })
@@ -27,7 +28,8 @@ shortUrlRouter.post('/shorturl', async (req, res) => {
 shortUrlRouter.get('/shortUrl/:url', async (req, res) => {
     try {
         const { url } = await expandUrlSchema.parseAsync(req.params)
-        await container.ExpandLinkUseCase.expandLink(url)
+        const initialUrl = await container.ExpandLinkUseCase.expandLink(url)
+        return res.redirect(initialUrl)
     } catch (e: any) {
         if(e.message.indexOf("invalid") >= 0) {
             return res.status(400).json({ error: "invalid short URL" })
@@ -39,9 +41,11 @@ shortUrlRouter.get('/shortUrl/:url', async (req, res) => {
     }
 })
 
-shortUrlRouter.get('/shortUrl/statistics', async (req, res) => {
+shortUrlRouter.get('/shortUrl/analytics', async (req, res) => {
     try {
-        //
+        const analytics = (await container.ListAnalyticsUseCase.listAnalytics())
+            .map( stat => Object.assign(stat, {id: undefined}))
+        return res.json(analytics)
     } catch (e: any) {
         if(e.message.indexOf("invalid")) {
             return res.status(400).json({ error: "invalid URL" })

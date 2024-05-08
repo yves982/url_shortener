@@ -22,8 +22,8 @@ export class SqliteLinkRepository implements ILinkRepository {
         if(!this.isInitialized) {
             throw new Error("invalid operation : must init first")
         }
-        await this.db!.run("INSERT INTO Link(originalUrl, clicksCnt) VALUES(:url, :cnt)", { ":url": link.originalUrl, ":cnt": link.clicksCnt })
-        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
+        await this.db!.run("INSERT INTO Link(originalUrl, clicksCnt) VALUES(:url, 0)", { ":url": link.originalUrl })
+        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl, clicksCnt FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
     }
 
     async findById(id: number): Promise<Link> {
@@ -38,7 +38,15 @@ export class SqliteLinkRepository implements ILinkRepository {
         if(!this.isInitialized) {
             throw new Error("invalid operation : must init first")
         }
-        await this.db!.run("UPDATE Link set originalUrl = :url, clicksCnt= :cnt", { ":url": link.originalUrl, ":cnt": link.clicksCnt })
-        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
+        await this.db!.run("UPDATE Link set clicksCnt= :cnt WHERE originalUrl = :url", { ":url": link.originalUrl, ":cnt": link.clicksCnt })
+        return Object.assign(new Link(""), await this.db!.get("SELECT rowid as id, originalUrl, clicksCnt FROM Link WHERE originalUrl= :url", { ":url": link.originalUrl }) as Link)
+    }
+
+    async getAll(): Promise<Link[]> {
+        const links = await this.db!.all<Link[]>("SELECT rowid as id, originalUrl, clicksCnt FROM Link")
+            
+        return links.map(
+            (link: Link) => Object.assign(new Link(""), link)
+        )
     }
 }

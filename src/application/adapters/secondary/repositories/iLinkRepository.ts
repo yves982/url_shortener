@@ -14,4 +14,7 @@ export interface ILinkRepository {
     //
     // returns null of given link does not exists
     findById(id: number): Promise<Link|null>
+
+    // returns all links
+    getAll(): Promise<Link[]>;
 }
