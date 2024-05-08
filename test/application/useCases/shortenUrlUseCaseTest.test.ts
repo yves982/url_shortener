@@ -7,3 +7,9 @@ it('should_provide_a_shorter_url_than_the_original', async() => {
     const link: Link = new Link(fixture.url)
     expect(link.shorten().length).toBeLessThan(fixture.url.length)
 })
+
+it('should_finds_the_original_url_from_shortened_one', async () => {
+    const fixture: UrlExpanderFixture = await FixtureHelper.load<UrlExpanderFixture>("shortenUrlUseCase/original_url_from_shortened_one.json")
+    const link: Link = new Link(fixture.url)
+    expect(Link.expand(link.shorten())).toBe(link.originalUrl)
+})
