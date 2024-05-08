@@ -1,26 +1,25 @@
 ﻿import {ILinkRepository} from "../adapters/secondary/repositories/iLinkRepository";
 import {IEncoder} from "../adapters/secondary/iEncoder";
+import {IOriginalLinkRetriever} from "../adapters/secondary/iOriginalLinkRetriever";
+import {ILinkIdentifier} from "../adapters/secondary/ILinkIdentifier";
 
 export class Link {
     
     constructor(
         public readonly originalUrl: string,
-        private readonly linkRepository?: ILinkRepository,
-        private readonly encoder?: IEncoder,
+        private readonly linkIdentifier?: ILinkIdentifier,
         public readonly id: number = -1
     ) {
     }
     
     async shorten(): Promise<string> {
-        if(this.linkRepository === undefined) {
+        if(this.linkIdentifier === undefined) {
             throw Error("must provide a repository")
         }
-        const updatedLink = await this.linkRepository!.save(this)
-        return this.encoder!.encode(updatedLink.id)
+        return this.linkIdentifier.identify(this)
     }
     
-    static async expand(shortUrl: string, linkRepository: ILinkRepository, encoder: IEncoder): Promise<string> {
-        const link = await linkRepository!.findById(encoder.decode(shortUrl))
-        return link.originalUrl
+    static async expand(shortUrl: string, originalLinkRetriever: IOriginalLinkRetriever): Promise<string> {
+        return await originalLinkRetriever.retrieve(shortUrl)
     }
 }

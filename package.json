@@ -2,11 +2,13 @@
   "name": "url-shortener",
   "packageManager": "yarn@4.2.1",
   "dependencies": {
+    "compression": "^1.7.4",
     "express": "^4.19.2",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/compression": "^1",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.10",
